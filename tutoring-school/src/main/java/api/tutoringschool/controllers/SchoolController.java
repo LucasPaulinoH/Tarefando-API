@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,61 +18,46 @@ import org.springframework.web.bind.annotation.RestController;
 
 import api.tutoringschool.dtos.school.SchoolDTO;
 import api.tutoringschool.model.School;
-import api.tutoringschool.repositories.SchoolRepository;
+import api.tutoringschool.services.SchoolService;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/schools")
 public class SchoolController {
     @Autowired
-    SchoolRepository repository;
+    private SchoolService service;
 
     @PostMapping
     public ResponseEntity<School> createSchool(@RequestBody @Valid SchoolDTO schoolDTO) {
-        var newSchool = new School();
-        BeanUtils.copyProperties(schoolDTO, newSchool);
-        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(newSchool));
+        School createdSchool = service.createSchool(schoolDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSchool);
     }
 
     @GetMapping
     public ResponseEntity<List<School>> getAllSchools() {
-        return ResponseEntity.status(HttpStatus.OK).body(repository.findAll());
+        List<School> schools = service.getAllSchools();
+        return ResponseEntity.status(HttpStatus.OK).body(schools);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSchool(@PathVariable(value = "id") UUID id) {
-        Optional<School> foundedSchool = repository.findById(id);
-
-        if (foundedSchool.isEmpty())
+        Optional<School> foundedSchool = service.getSchoolById(id);
+        if (foundedSchool.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("School not found.");
-
+        }
         return ResponseEntity.status(HttpStatus.OK).body(foundedSchool.get());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateSchool(@PathVariable(value = "id") UUID id,
-            @RequestBody @Valid SchoolDTO schoolData) {
-        Optional<School> foundedSchool = repository.findById(id);
-
-        if (foundedSchool.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("School not found.");
-
-        School updatedSchool = foundedSchool.get();
-        BeanUtils.copyProperties(schoolData, updatedSchool);
-
-        return ResponseEntity.status(HttpStatus.OK).body(repository.save(updatedSchool));
+            @RequestBody @Valid SchoolDTO schoolData) throws Exception {
+        School updatedSchool = service.updateSchool(id, schoolData);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedSchool);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Object> deleteSchool(@PathVariable(value = "id") UUID id,
-            @RequestBody @Valid SchoolDTO schoolData) {
-        Optional<School> foundedSchool = repository.findById(id);
-
-        if (foundedSchool.isEmpty())
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("School not found.");
-
-        repository.delete(foundedSchool.get());
-
+    public ResponseEntity<Object> deleteSchool(@PathVariable(value = "id") UUID id) throws Exception {
+        service.deleteSchool(id);
         return ResponseEntity.status(HttpStatus.OK).body("School successfully deleted.");
     }
 }

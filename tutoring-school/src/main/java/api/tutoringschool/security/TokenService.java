@@ -24,7 +24,7 @@ public class TokenService {
             var hmacAlgorithm = Algorithm.HMAC256(secretKey);
 
             String token = JWT.create()
-                    .withIssuer("tutoring-school")
+                    .withIssuer(user.getId().toString())
                     .withSubject(user.getEmail())
                     .withExpiresAt(generateExpirationDate())
                     .sign(hmacAlgorithm);
