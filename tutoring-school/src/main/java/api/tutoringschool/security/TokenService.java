@@ -26,6 +26,7 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("tutoring-school")
                     .withSubject(user.getEmail())
+                    .withClaim("id", user.getId().toString())
                     .withExpiresAt(generateExpirationDate())
                     .sign(hmacAlgorithm);
 

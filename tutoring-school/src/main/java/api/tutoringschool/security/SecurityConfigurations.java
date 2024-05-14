@@ -14,8 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import api.tutoringschool.types.UserRole;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
@@ -31,6 +29,8 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/schools").hasRole("TUTOR")
+                        .requestMatchers(HttpMethod.PUT, "/schools").hasRole("TUTOR")
+                        .requestMatchers(HttpMethod.DELETE, "/schools").hasRole("TUTOR")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
