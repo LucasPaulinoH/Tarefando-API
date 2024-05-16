@@ -31,6 +31,9 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/schools").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.PUT, "/schools").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.DELETE, "/schools").hasRole("TUTOR")
+                        .requestMatchers(HttpMethod.POST, "/students").hasRole("GUARDIAN")
+                        .requestMatchers(HttpMethod.PUT, "/students").hasRole("GUARDIAN")
+                        .requestMatchers(HttpMethod.DELETE, "/students").hasRole("GUARDIAN")
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

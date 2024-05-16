@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import api.tutoringschool.dtos.AuthenticationDTO;
-import api.tutoringschool.dtos.LoginResponseDTO;
-import api.tutoringschool.dtos.RegisterDTO;
+import api.tutoringschool.dtos.auth.AuthenticationDTO;
+import api.tutoringschool.dtos.auth.LoginResponseDTO;
+import api.tutoringschool.dtos.user.UserDTO;
 import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.UserRepository;
 import api.tutoringschool.security.TokenService;
@@ -32,7 +32,7 @@ public class AuthenticationController {
     private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO loginData){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO loginData) {
         var usernamePasswordToken = new UsernamePasswordAuthenticationToken(loginData.email(), loginData.password());
         var auth = authenticationManager.authenticate(usernamePasswordToken);
 
@@ -42,15 +42,15 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Object> register(@RequestBody @Valid RegisterDTO registerData){
-        if(userRepository.findByEmail(registerData.email()) != null) 
+    public ResponseEntity<Object> register(@RequestBody @Valid UserDTO registerData) {
+        if (userRepository.findByEmail(registerData.email()) != null)
             return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerData.password());
-        User newUser = new User( registerData.email(), registerData.role(), encryptedPassword);
+        User newUser = new User(registerData.name(), registerData.email(), registerData.phone(), registerData.role(),
+                registerData.profileImage(),
+                encryptedPassword);
 
-        userRepository.save(newUser);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(userRepository.save(newUser));
     }
 }

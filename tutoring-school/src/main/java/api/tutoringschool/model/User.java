@@ -23,8 +23,17 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "profileImage")
+    private String profileImage;
+
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @Column(name = "phone", nullable = false)
+    private String phone;
 
     @Column(name = "role", nullable = false)
     private UserRole role;
@@ -35,9 +44,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String email, UserRole role, String password) {
+    public User(String name, String email, String phone, UserRole role, String profileImage, String password) {
+        this.name = name;
         this.email = email;
+        this.phone = phone;
         this.role = role;
+        this.profileImage = profileImage;
         this.password = password;
     }
 
@@ -81,12 +93,36 @@ public class User implements UserDetails {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public UserRole getRole() {
@@ -100,4 +136,5 @@ public class User implements UserDetails {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

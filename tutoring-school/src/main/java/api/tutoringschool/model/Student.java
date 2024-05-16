@@ -20,7 +20,7 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "guardianId", nullable = false, unique = true)
+    @Column(name = "guardianId", nullable = false)
     private UUID guardianId;
 
     @Column(name = "schoolId")
@@ -80,5 +80,5 @@ public class Student implements Serializable {
 
     public void setGrade(String grade) {
         this.grade = grade;
-    }  
+    }
 }
