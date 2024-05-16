@@ -19,7 +19,7 @@ public class School implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "tutorId", nullable = false)
+    @Column(name = "tutor_id", nullable = false)
     private UUID tutorId;
 
     @Column(name = "name", nullable = false)
@@ -34,7 +34,7 @@ public class School implements Serializable {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "profileImage")
+    @Column(name = "profile_image")
     private String profileImage;
 
     @Column(name = "cep")
@@ -43,7 +43,7 @@ public class School implements Serializable {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @Column(name = "addressNumber", nullable = false)
+    @Column(name = "address_number", nullable = false)
     private String addressNumber;
 
     @Column(name = "district", nullable = false)

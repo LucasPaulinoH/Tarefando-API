@@ -20,10 +20,10 @@ public class Student implements Serializable {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(name = "guardianId", nullable = false)
+    @Column(name = "guardian_id", nullable = false)
     private UUID guardianId;
 
-    @Column(name = "schoolId")
+    @Column(name = "school_id")
     private UUID schoolId;
 
     @Column(name = "name", nullable = false)
