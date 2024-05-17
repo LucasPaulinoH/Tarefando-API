@@ -32,3 +32,23 @@ CREATE TABLE students (
     birthdate VARCHAR(255) NOT NULL,
     grade VARCHAR(20) NOT NULL
 );
+
+CREATE TABLE subjects (
+    id UUID PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE
+);
+
+CREATE TABLE tasks (
+    id UUID PRIMARY KEY,
+    subject_id UUID NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+    images VARCHAR(255)[],
+    deadline_date VARCHAR(255) NOT NULL,
+    status VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE students_tasks (
+    student_id UUID NOT NULL,
+    task_id UUID NOT NULL
+);

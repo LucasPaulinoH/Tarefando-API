@@ -12,3 +12,19 @@ VALUES
 INSERT INTO students (id, guardian_id, school_id, name, birthdate, grade)
 VALUES
 ('1e36205c-00bc-4c80-89e0-8aac732c81c2', '6822e532-e98c-4dc9-a341-bdc031da0ce6', NULL, 'Luiggi Paulino', '2024-07-11', '7a série');
+
+INSERT INTO subjects (id, name)
+VALUES
+('112ecd01-1104-40b9-be41-b424027c768c', 'Matemática'),
+('e00a7f1f-347c-415b-801f-63934b0e177d', 'Ciências'),
+('6679c602-caf9-4d48-a9ef-13a4218c1c7a', 'Português'),
+('6b97cbcf-ec62-48a5-8351-c98815fdf7f0' , 'História'),
+('390e4133-6a33-4bf1-b994-4aed4d1921d8', 'Geografia');
+
+INSERT INTO tasks (id, subject_id, title, description, images, deadline_date, status)
+VALUES
+('60305b5c-3605-44b5-b25b-36f22317c5ee', '112ecd01-1104-40b9-be41-b424027c768c', 'Exercício de Bhaskara', '', NULL, '2024-09-09', 0);
+
+INSERT INTO students_tasks (student_id, task_id)
+VALUES
+('1e36205c-00bc-4c80-89e0-8aac732c81c2','60305b5c-3605-44b5-b25b-36f22317c5ee');

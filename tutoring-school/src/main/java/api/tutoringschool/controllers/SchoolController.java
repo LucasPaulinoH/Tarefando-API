@@ -26,37 +26,37 @@ import jakarta.validation.Valid;
 @RequestMapping("/schools")
 public class SchoolController {
     @Autowired
-    private SchoolService schoolService;
+    private SchoolService service;
 
     @PostMapping
     public ResponseEntity<School> createSchool(@RequestBody @Valid SchoolDTO schoolDTO) throws BadRequestException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(schoolService.createSchool(schoolDTO));
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.createSchool(schoolDTO));
     }
 
     @GetMapping
     public ResponseEntity<List<School>> getAllSchools() {
-        return ResponseEntity.status(HttpStatus.OK).body(schoolService.getAllSchools());
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAllSchools());
     }
 
     @GetMapping("/search")
     public ResponseEntity<List<School>> getSchoolsFromTutor(@RequestParam("tutorId") String tutorId) {
         UUID tutorUUID = UUID.fromString(tutorId);
-        return ResponseEntity.status(HttpStatus.OK).body(schoolService.getSchoolsFromTutor(tutorUUID));
+        return ResponseEntity.status(HttpStatus.OK).body(service.getSchoolsFromTutor(tutorUUID));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> getSchool(@PathVariable(value = "id") UUID id) {
-        return schoolService.getSchool(id);
+        return service.getSchool(id);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateSchool(@PathVariable(value = "id") UUID id,
-            @RequestBody @Valid SchoolDTO schoolData) {
-        return schoolService.updateSchool(id, schoolData);
+            @RequestBody @Valid SchoolDTO schoolDTO) {
+        return service.updateSchool(id, schoolDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteSchool(@PathVariable(value = "id") UUID id) {
-        return schoolService.deleteSchool(id);
+        return service.deleteSchool(id);
     }
 }
