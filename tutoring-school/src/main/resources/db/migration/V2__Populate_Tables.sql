@@ -21,9 +21,9 @@ VALUES
 ('6b97cbcf-ec62-48a5-8351-c98815fdf7f0' , 'História'),
 ('390e4133-6a33-4bf1-b994-4aed4d1921d8', 'Geografia');
 
-INSERT INTO tasks (id, subject_id, title, description, images, deadline_date, status)
+INSERT INTO tasks (id, subject_id, title, description, images, deadline_date, is_concluded)
 VALUES
-('60305b5c-3605-44b5-b25b-36f22317c5ee', '112ecd01-1104-40b9-be41-b424027c768c', 'Exercício de Bhaskara', '', NULL, '2024-09-09', 0);
+('60305b5c-3605-44b5-b25b-36f22317c5ee', '112ecd01-1104-40b9-be41-b424027c768c', 'Exercício de Bhaskara', '', NULL, '2024-09-09', FALSE);
 
 INSERT INTO students_tasks (student_id, task_id)
 VALUES

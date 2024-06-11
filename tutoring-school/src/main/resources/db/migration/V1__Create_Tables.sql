@@ -29,7 +29,7 @@ CREATE TABLE students (
     guardian_id UUID NOT NULL,
     school_id UUID,
     name VARCHAR(255) NOT NULL,
-    birthdate VARCHAR(255) NOT NULL,
+    birthdate TIMESTAMP(6) WITHOUT TIME ZONE,
     grade VARCHAR(20) NOT NULL
 );
 
@@ -44,8 +44,8 @@ CREATE TABLE tasks (
     title VARCHAR(255) NOT NULL,
     description VARCHAR(255) NOT NULL,
     images VARCHAR(255)[],
-    deadline_date VARCHAR(255) NOT NULL,
-    status VARCHAR(255) NOT NULL
+    deadline_date TIMESTAMP(6) WITHOUT TIME ZONE,
+    is_concluded BOOLEAN NOT NULL
 );
 
 CREATE TABLE students_tasks (

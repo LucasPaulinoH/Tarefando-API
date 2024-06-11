@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.student.StudentDTO;
+import api.tutoringschool.model.School;
 import api.tutoringschool.model.Student;
+import api.tutoringschool.model.Task;
 import api.tutoringschool.repositories.StudentRepository;
 import api.tutoringschool.repositories.UserRepository;
 import api.tutoringschool.types.UserRole;
@@ -44,6 +46,10 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
+    public List<Task> getTasksFromStudent(UUID id) {
+        return studentRepository.findByIdWithTasks(id).getTasks();
+    }
+
     public ResponseEntity<Object> getStudent(UUID id) {
         Optional<Student> foundedStudent = studentRepository.findById(id);
 
@@ -52,6 +58,11 @@ public class StudentService {
 
         return ResponseEntity.status(HttpStatus.OK).body(foundedStudent.get());
     }
+
+    public List<Student> getStudentsFromGuardian(UUID guardianId) {
+        return studentRepository.findByGuardianId(guardianId);
+    }
+
 
     public ResponseEntity<Object> updateStudent(UUID id, StudentDTO studentData) {
         Optional<Student> foundedStudent = studentRepository.findById(id);

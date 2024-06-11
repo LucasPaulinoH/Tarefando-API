@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-import api.tutoringschool.types.TaskStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,8 +35,8 @@ public class Task implements Serializable {
     @Column(name = "deadline_date", nullable = false)
     private Date deadlineDate;
 
-    @Column(name = "status", nullable = false)
-    private TaskStatus status;
+    @Column(name = "is_concluded", nullable = false)
+    private boolean isConcluded = false;
 
     public Task() {
     }
@@ -86,11 +85,11 @@ public class Task implements Serializable {
         this.deadlineDate = deadlineDate;
     }
 
-    public TaskStatus getStatus() {
-        return status;
+    public boolean isConcluded() {
+        return isConcluded;
     }
 
-    public void setStatus(TaskStatus status) {
-        this.status = status;
+    public void setConcluded(boolean isConcluded) {
+        this.isConcluded = isConcluded;
     }
 }
