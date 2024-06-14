@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.task.TaskDTO;
 import api.tutoringschool.model.Task;
+import api.tutoringschool.repositories.StudentRepository;
 import api.tutoringschool.repositories.SubjectRepository;
 import api.tutoringschool.repositories.TaskRepository;
 
@@ -24,14 +25,22 @@ public class TaskService {
     @Autowired
     private SubjectRepository subjectRepository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     public Task createTask(TaskDTO taskDTO) throws BadRequestException {
         var foundedSubject = subjectRepository.findById(taskDTO.subjectId());
 
         if (foundedSubject.isEmpty())
             throw new BadRequestException("Given subjectId is not registered.");
 
-        Task newTask = new Task();
-        BeanUtils.copyProperties(taskDTO, newTask);
+        var foundedStudent = studentRepository.findById(taskDTO.studentId());
+
+        if (foundedStudent.isEmpty())
+            throw new BadRequestException("Given studentId is not registered.");
+
+        Task newTask = new Task(taskDTO.subjectId(), taskDTO.title(), taskDTO.description(), taskDTO.images(),
+                taskDTO.deadlineDate(), false, foundedStudent.get());
 
         return taskRepository.save(newTask);
     }

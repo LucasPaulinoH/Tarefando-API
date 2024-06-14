@@ -31,7 +31,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/schools").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.PUT, "/schools").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.DELETE, "/schools").hasRole("TUTOR")
-                        .requestMatchers(HttpMethod.POST, "/subjects").hasRole("TUTOR")
+                        .requestMatchers(HttpMethod.POST, "/subjects").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/subjects").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.DELETE, "/subjects").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.POST, "/students").hasRole("GUARDIAN")

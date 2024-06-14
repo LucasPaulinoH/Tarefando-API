@@ -25,6 +25,3 @@ INSERT INTO tasks (id, subject_id, title, description, images, deadline_date, is
 VALUES
 ('60305b5c-3605-44b5-b25b-36f22317c5ee', '112ecd01-1104-40b9-be41-b424027c768c', 'Exercício de Bhaskara', '', NULL, '2024-09-09', FALSE);
 
-INSERT INTO students_tasks (student_id, task_id)
-VALUES
-('1e36205c-00bc-4c80-89e0-8aac732c81c2','60305b5c-3605-44b5-b25b-36f22317c5ee');

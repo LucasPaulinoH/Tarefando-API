@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.student.StudentDTO;
-import api.tutoringschool.model.School;
 import api.tutoringschool.model.Student;
 import api.tutoringschool.model.Task;
 import api.tutoringschool.repositories.StudentRepository;

@@ -47,8 +47,3 @@ CREATE TABLE tasks (
     deadline_date TIMESTAMP(6) WITHOUT TIME ZONE,
     is_concluded BOOLEAN NOT NULL
 );
-
-CREATE TABLE students_tasks (
-    student_id UUID NOT NULL,
-    task_id UUID NOT NULL
-);

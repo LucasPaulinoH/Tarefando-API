@@ -1,19 +1,18 @@
 package api.tutoringschool.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Table(name = "students")
@@ -40,9 +39,8 @@ public class Student implements Serializable {
     @Column(name = "grade", nullable = false)
     private String grade;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "students_tasks", joinColumns = @JoinColumn(name = "student_id"), inverseJoinColumns = @JoinColumn(name = "task_id"))
-    private List<Task> tasks;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
 
     public Student() {
     }
@@ -97,5 +95,9 @@ public class Student implements Serializable {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

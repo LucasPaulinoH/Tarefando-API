@@ -6,9 +6,12 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Table(name = "tasks")
@@ -38,7 +41,22 @@ public class Task implements Serializable {
     @Column(name = "is_concluded", nullable = false)
     private boolean isConcluded = false;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id")
+    private Student student = new Student();
+
     public Task() {
+    }
+
+    public Task(UUID subjectId, String title, String description, String[] images, Date deadlineDate,
+            boolean isConcluded, Student student) {
+        this.subjectId = subjectId;
+        this.title = title;
+        this.description = description;
+        this.images = images;
+        this.deadlineDate = deadlineDate;
+        this.isConcluded = isConcluded;
+        this.student = student;
     }
 
     public UUID getId() {
@@ -91,5 +109,13 @@ public class Task implements Serializable {
 
     public void setConcluded(boolean isConcluded) {
         this.isConcluded = isConcluded;
+    }
+
+    public UUID getStudentId() {
+        return student.getId();
+    }
+
+    public void setStudentId(UUID studentId) {
+        this.student.setId(studentId);
     }
 }
