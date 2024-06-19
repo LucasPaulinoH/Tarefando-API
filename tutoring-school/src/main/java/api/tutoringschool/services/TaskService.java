@@ -70,6 +70,18 @@ public class TaskService {
         return ResponseEntity.status(HttpStatus.OK).body(taskRepository.save(updatedTask));
     }
 
+    public ResponseEntity<Object> toggleTaskConcluded(UUID taskId, boolean isConcluded) {
+        Optional<Task> foundedTask = taskRepository.findById(taskId);
+
+        if (foundedTask.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found.");
+
+        Task concludedTask = foundedTask.get();
+        concludedTask.setConcluded(isConcluded);
+
+        return ResponseEntity.status(HttpStatus.OK).body(taskRepository.save(concludedTask));
+    }
+
     public ResponseEntity<Object> deleteTask(UUID id) {
         Optional<Task> foundedTask = taskRepository.findById(id);
 

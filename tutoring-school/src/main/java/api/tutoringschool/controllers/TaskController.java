@@ -48,6 +48,11 @@ public class TaskController {
         return service.updateTask(id, TaskDTO);
     }
 
+    @PutMapping("/{id}/{is_concluded}")
+    public ResponseEntity<Object> toggleTaskConcluded(@PathVariable(value = "id") UUID id, @PathVariable(value = "is_concluded") boolean isConcluded) {
+        return service.toggleTaskConcluded(id, isConcluded);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteTask(@PathVariable(value = "id") UUID id) {
         return service.deleteTask(id);
