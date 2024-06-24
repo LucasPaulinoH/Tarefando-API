@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.tutoringschool.dtos.student.StudentDTO;
-import api.tutoringschool.model.School;
 import api.tutoringschool.model.Student;
 import api.tutoringschool.services.StudentService;
 import jakarta.validation.Valid;
@@ -45,9 +44,10 @@ public class StudentController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Student>> getStudentsFromGuardian(@RequestParam("guardianId") String guardianId) {
-        UUID guardianUUID = UUID.fromString(guardianId);
-        return ResponseEntity.status(HttpStatus.OK).body(service.getStudentsFromGuardian(guardianUUID));
+    public ResponseEntity<List<Student>> getStudentsFromGuardian(@RequestParam("userId") String userId) {
+        UUID userUUID = UUID.fromString(userId);
+        System.out.println(userUUID);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getStudentsFromGuardian(userUUID));
     }
 
     @GetMapping("/{id}/tasks")

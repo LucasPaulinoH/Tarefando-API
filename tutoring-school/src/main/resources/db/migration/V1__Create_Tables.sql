@@ -26,8 +26,8 @@ CREATE TABLE schools (
 
 CREATE TABLE students (
     id UUID PRIMARY KEY,
-    guardian_id UUID NOT NULL,
     school_id UUID,
+    user_id UUID NOT NULL,
     name VARCHAR(255) NOT NULL,
     birthdate TIMESTAMP(6) WITHOUT TIME ZONE,
     grade VARCHAR(20) NOT NULL

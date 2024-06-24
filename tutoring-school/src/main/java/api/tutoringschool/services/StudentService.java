@@ -27,7 +27,7 @@ public class StudentService {
     private UserRepository userRepository;
 
     public Student createStudent(StudentDTO studentDTO) throws BadRequestException {
-        var foundedUser = userRepository.findById(studentDTO.guardianId());
+        var foundedUser = userRepository.findById(studentDTO.userId());
 
         if (foundedUser.isEmpty())
             throw new BadRequestException("Given guardianId is not registered.");
@@ -37,6 +37,8 @@ public class StudentService {
 
         Student newStudent = new Student();
         BeanUtils.copyProperties(studentDTO, newStudent);
+
+        newStudent.setUser(foundedUser.get());
 
         return studentRepository.save(newStudent);
     }
@@ -59,9 +61,8 @@ public class StudentService {
     }
 
     public List<Student> getStudentsFromGuardian(UUID guardianId) {
-        return studentRepository.findByGuardianId(guardianId);
+        return studentRepository.findByUserId(guardianId);
     }
-
 
     public ResponseEntity<Object> updateStudent(UUID id, StudentDTO studentData) {
         Optional<Student> foundedStudent = studentRepository.findById(id);

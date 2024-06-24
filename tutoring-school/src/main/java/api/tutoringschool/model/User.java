@@ -1,5 +1,6 @@
 package api.tutoringschool.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 import java.util.List;
@@ -9,11 +10,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import api.tutoringschool.types.UserRole;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Table(name = "users")
@@ -41,16 +44,10 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public User() {
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Student> students = new ArrayList<>();
 
-    public User(String name, String email, String phone, UserRole role, String profileImage, String password) {
-        this.name = name;
-        this.email = email;
-        this.phone = phone;
-        this.role = role;
-        this.profileImage = profileImage;
-        this.password = password;
+    public User() {
     }
 
     @Override
@@ -137,4 +134,15 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
 }

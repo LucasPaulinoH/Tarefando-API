@@ -2,6 +2,7 @@ package api.tutoringschool.controllers;
 
 import jakarta.validation.Valid;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -47,9 +48,10 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().build();
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(registerData.password());
-        User newUser = new User(registerData.name(), registerData.email(), registerData.phone(), registerData.role(),
-                registerData.profileImage(),
-                encryptedPassword);
+
+        User newUser = new User();
+        BeanUtils.copyProperties(registerData, newUser);
+        newUser.setPassword(encryptedPassword);
 
         return ResponseEntity.ok().body(userRepository.save(newUser));
     }

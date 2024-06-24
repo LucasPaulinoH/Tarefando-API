@@ -13,5 +13,5 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     @Query("SELECT e FROM Student e JOIN FETCH e.tasks WHERE e.id = :id")
     Student findByIdWithTasks(@Param("id") UUID studentId);
 
-    List<Student> findByGuardianId(UUID guardianId);
+    List<Student> findByUserId(UUID userId);
 }
