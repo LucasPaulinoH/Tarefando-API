@@ -10,7 +10,7 @@ CREATE TABLE users (
 
 CREATE TABLE schools (
     id UUID PRIMARY KEY,
-    tutor_id UUID NOT NULL,
+    user_id UUID NOT NULL,
     name VARCHAR(255),
     description VARCHAR(255) NOT NULL,
     phone VARCHAR(20) NOT NULL UNIQUE,

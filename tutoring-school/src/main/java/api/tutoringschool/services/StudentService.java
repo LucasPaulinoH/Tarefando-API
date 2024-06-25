@@ -12,14 +12,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.student.StudentDTO;
+import api.tutoringschool.model.School;
 import api.tutoringschool.model.Student;
 import api.tutoringschool.model.Task;
+import api.tutoringschool.repositories.SchoolRepository;
 import api.tutoringschool.repositories.StudentRepository;
 import api.tutoringschool.repositories.UserRepository;
 import api.tutoringschool.types.UserRole;
 
 @Service
 public class StudentService {
+    @Autowired
+    SchoolRepository schoolRepository;
+
     @Autowired
     StudentRepository studentRepository;
 
@@ -64,6 +69,10 @@ public class StudentService {
         return studentRepository.findByUserId(guardianId);
     }
 
+    public List<Student> getStudentsFromSchool(UUID schoolId) {
+        return studentRepository.findBySchoolId(schoolId);
+    }
+
     public ResponseEntity<Object> updateStudent(UUID id, StudentDTO studentData) {
         Optional<Student> foundedStudent = studentRepository.findById(id);
 
@@ -74,6 +83,23 @@ public class StudentService {
         BeanUtils.copyProperties(studentData, updatedStudent);
 
         return ResponseEntity.status(HttpStatus.OK).body(studentRepository.save(updatedStudent));
+    }
+
+    public ResponseEntity<Object> unlinkStudentFromSchool(UUID studentId) {
+        Optional<Student> foundedStudent = studentRepository.findById(studentId);
+
+        if (foundedStudent.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+
+        Optional<School> foundedSchool = schoolRepository.findById(foundedStudent.get().getSchoolId());
+
+        if (foundedSchool.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("School not found.");
+
+        Student unlinkedStudent = foundedStudent.get();
+        unlinkedStudent.setSchoolId(null);
+
+        return ResponseEntity.status(HttpStatus.OK).body(studentRepository.save(unlinkedStudent));
     }
 
     public ResponseEntity<Object> deleteStudent(UUID id) {

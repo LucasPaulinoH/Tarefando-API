@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -34,7 +35,7 @@ public class StudentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Student>> getAllSchools() {
+    public ResponseEntity<List<Student>> getAllStudents() {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAllStudents());
     }
 
@@ -43,11 +44,16 @@ public class StudentController {
         return service.getStudent(id);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/guardian")
     public ResponseEntity<List<Student>> getStudentsFromGuardian(@RequestParam("userId") String userId) {
         UUID userUUID = UUID.fromString(userId);
-        System.out.println(userUUID);
         return ResponseEntity.status(HttpStatus.OK).body(service.getStudentsFromGuardian(userUUID));
+    }
+
+    @GetMapping("/school")
+    public ResponseEntity<List<Student>> getStudentsFromSchool(@RequestParam("schoolId") String schoolId) {
+        UUID schoolUUID = UUID.fromString(schoolId);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getStudentsFromSchool(schoolUUID));
     }
 
     @GetMapping("/{id}/tasks")
@@ -59,6 +65,11 @@ public class StudentController {
     public ResponseEntity<Object> updateStudent(@PathVariable(value = "id") UUID id,
             @RequestBody @Valid StudentDTO studentData) {
         return service.updateStudent(id, studentData);
+    }
+
+    @PatchMapping("/unlink-from-school/{studentId}")
+    public ResponseEntity<Object> unlinkStudentFromSchool(@PathVariable(value = "studentId") UUID studentId) {
+        return service.unlinkStudentFromSchool(studentId);
     }
 
     @DeleteMapping("/{id}")

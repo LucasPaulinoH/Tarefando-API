@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import api.tutoringschool.model.School;
 
 public interface SchoolRepository extends JpaRepository<School, UUID> {
-    List<School> findByTutorId(UUID tutorId);
+    List<School> findByUserId(UUID tutorId);
 }

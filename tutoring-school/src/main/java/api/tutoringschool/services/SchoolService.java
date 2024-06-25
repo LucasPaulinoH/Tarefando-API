@@ -26,7 +26,7 @@ public class SchoolService {
     private UserRepository userRepository;
 
     public School createSchool(SchoolDTO schoolDTO) throws BadRequestException {
-        var foundedUser = userRepository.findById(schoolDTO.tutorId());
+        var foundedUser = userRepository.findById(schoolDTO.userId());
 
         if (foundedUser.isEmpty())
             throw new BadRequestException("Given tutorId is not registered.");
@@ -36,7 +36,8 @@ public class SchoolService {
 
         School newSchool = new School();
         BeanUtils.copyProperties(schoolDTO, newSchool);
-        
+        newSchool.setUser(foundedUser.get());
+
         return schoolRepository.save(newSchool);
     }
 
@@ -45,7 +46,7 @@ public class SchoolService {
     }
 
     public List<School> getSchoolsFromTutor(UUID tutorId) {
-        return schoolRepository.findByTutorId(tutorId);
+        return schoolRepository.findByUserId(tutorId);
     }
 
     public ResponseEntity<Object> getSchool(UUID id) {

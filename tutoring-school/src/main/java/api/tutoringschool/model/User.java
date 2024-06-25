@@ -47,6 +47,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Student> students = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<School> schools = new ArrayList<>();
+
     public User() {
     }
 
@@ -144,5 +147,13 @@ public class User implements UserDetails {
 
     public void setStudents(List<Student> students) {
         this.students = students;
+    }
+
+    public List<School> getSchools() {
+        return schools;
+    }
+
+    public void setSchools(List<School> schools) {
+        this.schools = schools;
     }
 }

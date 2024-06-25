@@ -14,4 +14,6 @@ public interface StudentRepository extends JpaRepository<Student, UUID> {
     Student findByIdWithTasks(@Param("id") UUID studentId);
 
     List<Student> findByUserId(UUID userId);
+
+    List<Student> findBySchoolId(UUID schoolId);
 }

@@ -5,9 +5,12 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Table(name = "schools")
@@ -18,9 +21,6 @@ public class School implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Column(name = "tutor_id", nullable = false)
-    private UUID tutorId;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -55,19 +55,15 @@ public class School implements Serializable {
     @Column(name = "state", nullable = false)
     private String state;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public School() {
     }
 
     public UUID getId() {
         return id;
-    }
-
-    public UUID getTutorId() {
-        return tutorId;
-    }
-
-    public void setTutorId(UUID tutorId) {
-        this.tutorId = tutorId;
     }
 
     public String getName() {
@@ -157,4 +153,12 @@ public class School implements Serializable {
     public void setState(String state) {
         this.state = state;
     }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    } 
 }
