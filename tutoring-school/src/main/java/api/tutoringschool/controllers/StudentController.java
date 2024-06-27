@@ -72,6 +72,12 @@ public class StudentController {
         return service.unlinkStudentFromSchool(studentId);
     }
 
+    @PatchMapping("/link-to-school/{studentId}/{schoolId}")
+    public ResponseEntity<Object> linkStudentToSchool(@PathVariable(value = "studentId") UUID studentId,
+            @PathVariable(value = "schoolId") UUID schoolId) {
+        return service.linkStudentToSchool(studentId, schoolId);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Object> deleteStudent(@PathVariable(value = "id") UUID id) {
         return service.deleteStudent(id);

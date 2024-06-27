@@ -102,6 +102,23 @@ public class StudentService {
         return ResponseEntity.status(HttpStatus.OK).body(studentRepository.save(unlinkedStudent));
     }
 
+    public ResponseEntity<Object> linkStudentToSchool(UUID studentId, UUID schoolId) {
+        Optional<Student> foundedStudent = studentRepository.findById(studentId);
+
+        if (foundedStudent.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+
+        Optional<School> foundedSchool = schoolRepository.findById(schoolId);
+
+        if (foundedSchool.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("School not found.");
+
+        Student linkedStudent = foundedStudent.get();
+        linkedStudent.setSchoolId(schoolId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(studentRepository.save(linkedStudent));
+    }
+
     public ResponseEntity<Object> deleteStudent(UUID id) {
         Optional<Student> foundedStudent = studentRepository.findById(id);
 
