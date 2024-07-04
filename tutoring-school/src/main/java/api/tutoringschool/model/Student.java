@@ -97,11 +97,11 @@ public class Student implements Serializable {
         this.id = id;
     }
 
-    public static long getSerialversionuid() {
-        return serialVersionUID;
-    }
-
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public UUID getUser() {
+        return user.getId();
     }
 }

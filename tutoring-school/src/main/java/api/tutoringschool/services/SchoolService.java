@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.school.SchoolDTO;
+import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
 import api.tutoringschool.model.School;
+import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.SchoolRepository;
 import api.tutoringschool.repositories.UserRepository;
 import api.tutoringschool.types.UserRole;
@@ -68,6 +70,19 @@ public class SchoolService {
         BeanUtils.copyProperties(schoolData, updatedSchool);
 
         return ResponseEntity.status(HttpStatus.OK).body(schoolRepository.save(updatedSchool));
+    }
+
+    public ResponseEntity<Object> updateSchoolProfileImage(ProfileImageUpdateDTO profileImageUpdateDTO) {
+        Optional<School> foundedSchool = schoolRepository.findById(profileImageUpdateDTO.id());
+
+        if (foundedSchool.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("School not found.");
+
+        School updatedSchool = foundedSchool.get();
+        updatedSchool.setProfileImage(profileImageUpdateDTO.url());
+        schoolRepository.save(updatedSchool);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
     }
 
     public ResponseEntity<Object> deleteSchool(UUID id) {

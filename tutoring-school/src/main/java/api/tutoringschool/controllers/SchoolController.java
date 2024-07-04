@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.tutoringschool.dtos.school.SchoolDTO;
+import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
 import api.tutoringschool.model.School;
 import api.tutoringschool.services.SchoolService;
 import jakarta.validation.Valid;
@@ -53,6 +55,12 @@ public class SchoolController {
     public ResponseEntity<Object> updateSchool(@PathVariable(value = "id") UUID id,
             @RequestBody @Valid SchoolDTO schoolDTO) {
         return service.updateSchool(id, schoolDTO);
+    }
+
+    @PatchMapping("/profile-image")
+    public ResponseEntity<Object> updateSchoolProfileImage(
+            @RequestBody @Valid ProfileImageUpdateDTO profileImageUpdateDTO) {
+        return service.updateSchoolProfileImage(profileImageUpdateDTO);
     }
 
     @DeleteMapping("/{id}")

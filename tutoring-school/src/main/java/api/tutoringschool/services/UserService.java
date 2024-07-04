@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
+import api.tutoringschool.dtos.user.UpdateUserDTO;
+import api.tutoringschool.dtos.user.UserCardDTO;
 import api.tutoringschool.dtos.user.UserDTO;
 import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.UserRepository;
@@ -32,7 +35,18 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.OK).body(foundedUser.get());
     }
 
-    public ResponseEntity<Object> updateUser(UUID id, UserDTO userData) {
+    public ResponseEntity<Object> getUserNameAndImage(UUID id) {
+        Optional<User> foundedUser = userRepository.findById(id);
+
+        if (foundedUser.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+
+        UserCardDTO userCardDTO = new UserCardDTO(foundedUser.get().getName(), foundedUser.get().getProfileImage());
+
+        return ResponseEntity.status(HttpStatus.OK).body(userCardDTO);
+    }
+
+    public ResponseEntity<Object> updateUser(UUID id, UpdateUserDTO userData) {
         Optional<User> foundedUser = userRepository.findById(id);
 
         if (foundedUser.isEmpty())
@@ -42,6 +56,19 @@ public class UserService {
         BeanUtils.copyProperties(userData, updatedUser);
 
         return ResponseEntity.status(HttpStatus.OK).body(userRepository.save(updatedUser));
+    }
+
+    public ResponseEntity<Object> updateUserProfileImage(ProfileImageUpdateDTO profileImageUpdateDTO) {
+        Optional<User> foundedUser = userRepository.findById(profileImageUpdateDTO.id());
+
+        if (foundedUser.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+
+        User updatedUser = foundedUser.get();
+        updatedUser.setProfileImage(profileImageUpdateDTO.url());
+        userRepository.save(updatedUser);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
     }
 
     public ResponseEntity<Object> deleteUser(UUID id) {

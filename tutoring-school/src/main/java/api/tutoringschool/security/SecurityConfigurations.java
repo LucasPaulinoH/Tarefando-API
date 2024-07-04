@@ -28,6 +28,8 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/users/profile-image").permitAll()
+                        .requestMatchers(HttpMethod.PATCH, "/schools/profile-image").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.POST, "/schools").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.PUT, "/schools").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.DELETE, "/schools").hasRole("TUTOR")
