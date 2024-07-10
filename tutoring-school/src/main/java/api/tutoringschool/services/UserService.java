@@ -8,12 +8,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
 import api.tutoringschool.dtos.user.UpdateUserDTO;
 import api.tutoringschool.dtos.user.UserCardDTO;
-import api.tutoringschool.dtos.user.UserDTO;
+import api.tutoringschool.dtos.user.ValidatePasswordDTO;
 import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.UserRepository;
 
@@ -69,6 +70,20 @@ public class UserService {
         userRepository.save(updatedUser);
 
         return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
+    }
+
+    public ResponseEntity<Object> validateCurrentPassword(ValidatePasswordDTO validatePasswordDTO) {
+        Optional<User> foundedUser = userRepository.findById(validatePasswordDTO.id());
+
+        if (foundedUser.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+        boolean doesPasswordsMatch = passwordEncoder.matches(validatePasswordDTO.password(),
+                foundedUser.get().getPassword());
+
+        return ResponseEntity.status(HttpStatus.OK).body(doesPasswordsMatch);
     }
 
     public ResponseEntity<Object> deleteUser(UUID id) {

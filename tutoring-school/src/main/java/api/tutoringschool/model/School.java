@@ -160,5 +160,9 @@ public class School implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }  
+    }
+
+    public UUID getUser() {
+        return user.getId();
+    }
 }

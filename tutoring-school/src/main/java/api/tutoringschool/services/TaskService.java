@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import api.tutoringschool.dtos.common.MultipleImagesUpdateDTO;
 import api.tutoringschool.dtos.task.TaskDTO;
 import api.tutoringschool.model.Task;
 import api.tutoringschool.repositories.StudentRepository;
@@ -68,6 +69,19 @@ public class TaskService {
         BeanUtils.copyProperties(taskDTO, updatedTask);
 
         return ResponseEntity.status(HttpStatus.OK).body(taskRepository.save(updatedTask));
+    }
+
+    public ResponseEntity<Object> updateTaskImages(MultipleImagesUpdateDTO multipleImagesUpdateDTO) {
+        Optional<Task> foundedTask = taskRepository.findById(multipleImagesUpdateDTO.id());
+
+        if (foundedTask.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Task not found.");
+
+        Task updatedTask = foundedTask.get();
+        updatedTask.setImages(multipleImagesUpdateDTO.urls());
+        taskRepository.save(updatedTask);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
     }
 
     public ResponseEntity<Object> toggleTaskConcluded(UUID taskId, boolean isConcluded) {

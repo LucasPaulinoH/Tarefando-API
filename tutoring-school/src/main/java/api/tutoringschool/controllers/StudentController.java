@@ -63,7 +63,7 @@ public class StudentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateStudent(@PathVariable(value = "id") UUID id,
-            @RequestBody @Valid StudentDTO studentData) {
+            @RequestBody @Valid StudentDTO studentData) throws BadRequestException {
         return service.updateStudent(id, studentData);
     }
 

@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import api.tutoringschool.dtos.school.SchoolDTO;
 import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
 import api.tutoringschool.model.School;
-import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.SchoolRepository;
 import api.tutoringschool.repositories.UserRepository;
 import api.tutoringschool.types.UserRole;
@@ -48,7 +47,7 @@ public class SchoolService {
     }
 
     public List<School> getSchoolsFromTutor(UUID tutorId) {
-        return schoolRepository.findByUserId(tutorId);
+        return schoolRepository.findByUser(tutorId);
     }
 
     public ResponseEntity<Object> getSchool(UUID id) {

@@ -66,18 +66,26 @@ public class StudentService {
     }
 
     public List<Student> getStudentsFromGuardian(UUID guardianId) {
-        return studentRepository.findByUserId(guardianId);
+        return studentRepository.findByUser(guardianId);
     }
 
     public List<Student> getStudentsFromSchool(UUID schoolId) {
         return studentRepository.findBySchoolId(schoolId);
     }
 
-    public ResponseEntity<Object> updateStudent(UUID id, StudentDTO studentData) {
+    public ResponseEntity<Object> updateStudent(UUID id, StudentDTO studentData) throws BadRequestException {
         Optional<Student> foundedStudent = studentRepository.findById(id);
+
+        var foundedUser = userRepository.findById(studentData.userId());
 
         if (foundedStudent.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+
+        if (foundedUser.isEmpty())
+            throw new BadRequestException("Given guardianId is not registered.");
+
+        if (foundedUser.get().getRole() != UserRole.GUARDIAN)
+            throw new BadRequestException("Given user id is not from a GUARDIAN.");
 
         Student updatedStudent = foundedStudent.get();
         BeanUtils.copyProperties(studentData, updatedStudent);
