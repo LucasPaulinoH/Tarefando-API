@@ -47,7 +47,7 @@ public class SchoolService {
     }
 
     public List<School> getSchoolsFromTutor(UUID tutorId) {
-        return schoolRepository.findByUser(tutorId);
+        return schoolRepository.findByUserId(tutorId);
     }
 
     public ResponseEntity<Object> getSchool(UUID id) {

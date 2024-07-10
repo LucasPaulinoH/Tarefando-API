@@ -66,7 +66,7 @@ public class StudentService {
     }
 
     public List<Student> getStudentsFromGuardian(UUID guardianId) {
-        return studentRepository.findByUser(guardianId);
+        return studentRepository.findByUserId(guardianId);
     }
 
     public List<Student> getStudentsFromSchool(UUID schoolId) {

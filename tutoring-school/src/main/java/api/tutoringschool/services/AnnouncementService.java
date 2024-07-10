@@ -55,6 +55,11 @@ public class AnnouncementService {
         return ResponseEntity.status(HttpStatus.OK).body(foundedAnnouncement.get());
     }
 
+    public List<Announcement> getAnnouncementsFromUser(UUID userId) {
+        return announcementRepository.findByUserId(userId);
+    }
+
+
     public ResponseEntity<Object> updateAnnouncement(UUID id, AnnouncementDTO announcementData)
             throws BadRequestException {
         Optional<Announcement> foundedAnnouncement = announcementRepository.findById(id);

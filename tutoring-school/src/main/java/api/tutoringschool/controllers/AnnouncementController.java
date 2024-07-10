@@ -14,10 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.tutoringschool.dtos.announcement.AnnouncementDTO;
 import api.tutoringschool.model.Announcement;
+import api.tutoringschool.model.School;
 import api.tutoringschool.services.AnnouncementService;
 import jakarta.validation.Valid;
 
@@ -41,6 +43,12 @@ public class AnnouncementController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getAnnouncement(@PathVariable(value = "id") UUID id) {
         return service.getAnnouncement(id);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Announcement>> getAnnouncementsFromTutor(@RequestParam("tutorId") String tutorId) {
+        UUID tutorUUID = UUID.fromString(tutorId);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAnnouncementsFromUser(tutorUUID));
     }
 
     @PutMapping("/{id}")
