@@ -85,7 +85,7 @@ public class Announcement implements Serializable {
         this.user = user;
     }
 
-    // public UUID getUser() {
-    // return user.getId();
-    // }
+    public User getUser() {
+        return user;
+    }    
 }

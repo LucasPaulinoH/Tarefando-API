@@ -3,6 +3,7 @@ package api.tutoringschool.controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
@@ -42,6 +44,15 @@ public class UserController {
     @GetMapping("/user-card/{id}")
     public ResponseEntity<Object> getUserNameAndImage(@PathVariable(value = "id") UUID id) {
         return userService.getUserNameAndImage(id);
+    }
+
+    @GetMapping("/associated-guardians")
+    public ResponseEntity<Object> getAllAssociatedGuardianCards(@RequestParam("tutorId") String tutorId)
+            throws BadRequestException {
+        UUID tutorUUID = UUID.fromString(tutorId);
+        ResponseEntity<Object> response = userService.getAllAssociatedGuardianCards(tutorUUID);
+
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
     }
 
     @PutMapping("/{id}")

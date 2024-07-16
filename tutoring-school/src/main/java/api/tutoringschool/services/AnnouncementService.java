@@ -1,5 +1,6 @@
 package api.tutoringschool.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import api.tutoringschool.dtos.announcement.AnnouncementDTO;
+import api.tutoringschool.dtos.announcement.ReceivedAnnouncementDTO;
+import api.tutoringschool.dtos.common.MultipleImagesUpdateDTO;
 import api.tutoringschool.model.Announcement;
 import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.AnnouncementRepository;
@@ -57,8 +60,31 @@ public class AnnouncementService {
 
     public List<Announcement> getAnnouncementsFromUser(UUID userId) {
         return announcementRepository.findByUserId(userId);
-    }
+    }   
 
+    public ResponseEntity<Object> getReceiverAnnouncements(UUID guardianId) throws BadRequestException {
+        Optional<User> foundedUser = userRepository.findById(guardianId);
+
+        if (foundedUser.isEmpty())
+            throw new BadRequestException("Given guardianId is not registered.");
+
+        var receivedAnnouncements = announcementRepository.findReceiverAnnouncements(guardianId);
+
+        if (receivedAnnouncements.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No announcement was found for this id.");
+
+        var receivedAnnouncementsDtoList = new ArrayList<ReceivedAnnouncementDTO>();
+
+        Announcement iterableDto = null;
+        for (int i = 0; i < receivedAnnouncements.size(); i++) {
+            iterableDto = receivedAnnouncements.get(i);
+
+            receivedAnnouncementsDtoList.add(new ReceivedAnnouncementDTO(iterableDto.getTitle(),
+                    iterableDto.getDescription(), iterableDto.getImages(), iterableDto.getUser().getId()));
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(receivedAnnouncementsDtoList);
+    }
 
     public ResponseEntity<Object> updateAnnouncement(UUID id, AnnouncementDTO announcementData)
             throws BadRequestException {
@@ -79,6 +105,19 @@ public class AnnouncementService {
         BeanUtils.copyProperties(announcementData, updatedAnnouncement);
 
         return ResponseEntity.status(HttpStatus.OK).body(announcementRepository.save(updatedAnnouncement));
+    }
+
+    public ResponseEntity<Object> updateAnnouncementImages(MultipleImagesUpdateDTO multipleImagesUpdateDTO) {
+        Optional<Announcement> foundedAnnouncement = announcementRepository.findById(multipleImagesUpdateDTO.id());
+
+        if (foundedAnnouncement.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Announcement not found.");
+
+        var updatedAnnouncement = foundedAnnouncement.get();
+        updatedAnnouncement.setImages(multipleImagesUpdateDTO.urls());
+        announcementRepository.save(updatedAnnouncement);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
     }
 
     public ResponseEntity<Object> deleteAnnouncement(UUID id) {

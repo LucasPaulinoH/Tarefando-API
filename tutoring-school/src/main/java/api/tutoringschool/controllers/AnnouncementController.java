@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import api.tutoringschool.dtos.announcement.AnnouncementDTO;
+import api.tutoringschool.dtos.common.MultipleImagesUpdateDTO;
 import api.tutoringschool.model.Announcement;
-import api.tutoringschool.model.School;
 import api.tutoringschool.services.AnnouncementService;
 import jakarta.validation.Valid;
 
@@ -51,10 +52,25 @@ public class AnnouncementController {
         return ResponseEntity.status(HttpStatus.OK).body(service.getAnnouncementsFromUser(tutorUUID));
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<Object> getReceiverAnnouncements(@RequestParam("receiverId") String receiverId)
+            throws BadRequestException {
+        UUID receiverUUID = UUID.fromString(receiverId);
+        ResponseEntity<Object> response = service.getReceiverAnnouncements(receiverUUID);
+
+        return ResponseEntity.status(response.getStatusCode()).body(response.getBody());
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Object> updateAnnouncement(@PathVariable(value = "id") UUID id,
             @RequestBody @Valid AnnouncementDTO announcementDTO) throws BadRequestException {
         return service.updateAnnouncement(id, announcementDTO);
+    }
+
+    @PatchMapping("/images")
+    public ResponseEntity<Object> updateTaskImages(
+            @RequestBody @Valid MultipleImagesUpdateDTO multipleImagesUpdateDTO) {
+        return service.updateAnnouncementImages(multipleImagesUpdateDTO);
     }
 
     @DeleteMapping("/{id}")
