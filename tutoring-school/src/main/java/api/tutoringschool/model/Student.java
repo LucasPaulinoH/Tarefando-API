@@ -99,6 +99,7 @@ public class Student implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+        
     }
 
     public UUID getUser() {

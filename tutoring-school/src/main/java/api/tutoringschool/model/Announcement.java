@@ -3,6 +3,8 @@ package api.tutoringschool.model;
 import java.io.Serializable;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -85,7 +87,8 @@ public class Announcement implements Serializable {
         this.user = user;
     }
 
+    @JsonBackReference
     public User getUser() {
         return user;
-    }    
+    }
 }
