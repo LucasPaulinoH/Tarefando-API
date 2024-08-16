@@ -32,6 +32,8 @@ public class UserService {
     @Autowired
     private StudentService studentService;
 
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -115,19 +117,35 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
     }
 
-    public ResponseEntity<Object> validateCurrentPassword(ValidatePasswordDTO validatePasswordDTO) {
-        Optional<User> foundedUser = userRepository.findById(validatePasswordDTO.id());
-
+    public ResponseEntity<Object> updateUserPassword(ValidatePasswordDTO validatePasswordDTO) {
+        ResponseEntity<Optional<User>> responseEntity = validateCurrentPassword(validatePasswordDTO);
+        Optional<User> foundedUser = responseEntity.getBody();
+    
         if (foundedUser.isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
-        boolean doesPasswordsMatch = passwordEncoder.matches(validatePasswordDTO.password(),
-                foundedUser.get().getPassword());
-
-        return ResponseEntity.status(HttpStatus.OK).body(doesPasswordsMatch);
+    
+        User updatedUser = foundedUser.get();
+        updatedUser.setPassword(passwordEncoder.encode(validatePasswordDTO.newPassword()));
+        userRepository.save(updatedUser);
+    
+        return ResponseEntity.status(HttpStatus.OK).body("Password successfully updated.");
     }
+    
+    private ResponseEntity<Optional<User>> validateCurrentPassword(ValidatePasswordDTO validatePasswordDTO) {
+        Optional<User> foundedUser = userRepository.findById(validatePasswordDTO.id());
+    
+        if (foundedUser.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Optional.empty());
+    
+        boolean doesPasswordsMatch = passwordEncoder.matches(validatePasswordDTO.currentPassword(),
+                foundedUser.get().getPassword());
+    
+        if (!doesPasswordsMatch)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Optional.empty());
+    
+        return ResponseEntity.status(HttpStatus.OK).body(foundedUser);
+    }
+    
 
     public ResponseEntity<Object> deleteUser(UUID id) {
         Optional<User> foundedUser = userRepository.findById(id);

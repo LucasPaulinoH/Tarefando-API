@@ -67,10 +67,10 @@ public class UserController {
         return userService.updateUserProfileImage(profileImageUpdateDTO);
     }
 
-    @PostMapping("/validate-password")
-    public ResponseEntity<Object> validateCurrentPassword(
+    @PostMapping("/update-password")
+    public ResponseEntity<Object> updateUserPassword(
             @RequestBody @Valid ValidatePasswordDTO validatePasswordDTO) {
-        return userService.validateCurrentPassword(validatePasswordDTO);
+        return userService.updateUserPassword(validatePasswordDTO);
     }
 
     @DeleteMapping("/{id}")
