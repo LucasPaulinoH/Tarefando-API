@@ -93,6 +93,29 @@ public class StudentService {
         return ResponseEntity.status(HttpStatus.OK).body(studentRepository.save(updatedStudent));
     }
 
+    public ResponseEntity<Object> checkStudentSchoolarLinkValidity(UUID studentId) {
+        Optional<Student> foundedStudent = studentRepository.findById(studentId);
+
+        if (foundedStudent.isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found.");
+
+        UUID studentSchoolId = foundedStudent.get().getSchoolId();
+
+        if (studentSchoolId != null) {
+            Optional<School> foundedSchool = schoolRepository.findById(studentSchoolId);
+
+            if (foundedSchool.isEmpty()) {
+                Student updatedStudent = foundedStudent.get();
+                updatedStudent.setSchoolId(null);
+                studentRepository.save(updatedStudent);
+
+                return ResponseEntity.status(HttpStatus.OK).body(false);
+            }
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(true);
+    }
+
     public ResponseEntity<Object> unlinkStudentFromSchool(UUID studentId) {
         Optional<Student> foundedStudent = studentRepository.findById(studentId);
 

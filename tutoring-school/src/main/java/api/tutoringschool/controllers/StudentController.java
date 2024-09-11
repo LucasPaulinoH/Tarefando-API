@@ -67,6 +67,11 @@ public class StudentController {
         return service.updateStudent(id, studentData);
     }
 
+    @PostMapping("/check-student-link/{studentId}")
+    public ResponseEntity<Object> checkStudentLinkValidity(@PathVariable(value = "studentId") UUID studentId) {
+        return service.checkStudentSchoolarLinkValidity(studentId);
+    }
+
     @PatchMapping("/unlink-from-school/{studentId}")
     public ResponseEntity<Object> unlinkStudentFromSchool(@PathVariable(value = "studentId") UUID studentId) {
         return service.unlinkStudentFromSchool(studentId);

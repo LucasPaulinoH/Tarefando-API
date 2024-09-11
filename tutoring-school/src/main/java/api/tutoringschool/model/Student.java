@@ -31,7 +31,7 @@ public class Student implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "school_id")
+    @Column(name = "school_id", nullable = true)
     private UUID schoolId;
 
     @Column(name = "name", nullable = false)
@@ -99,7 +99,7 @@ public class Student implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-        
+
     }
 
     public UUID getUser() {

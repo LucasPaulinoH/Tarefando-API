@@ -145,7 +145,6 @@ public class UserService {
     
         return ResponseEntity.status(HttpStatus.OK).body(foundedUser);
     }
-    
 
     public ResponseEntity<Object> deleteUser(UUID id) {
         Optional<User> foundedUser = userRepository.findById(id);
