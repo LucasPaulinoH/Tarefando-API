@@ -117,6 +117,7 @@ public class UserService {
         return ResponseEntity.status(HttpStatus.OK).body("Profile image updated successfully.");
     }
 
+    @SuppressWarnings("null")
     public ResponseEntity<Object> updateUserPassword(ValidatePasswordDTO validatePasswordDTO) {
         ResponseEntity<Optional<User>> responseEntity = validateCurrentPassword(validatePasswordDTO);
         Optional<User> foundedUser = responseEntity.getBody();
