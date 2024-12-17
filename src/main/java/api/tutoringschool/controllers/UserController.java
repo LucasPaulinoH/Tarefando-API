@@ -23,10 +23,12 @@ import api.tutoringschool.dtos.user.UpdateUserDTO;
 import api.tutoringschool.dtos.user.ValidatePasswordDTO;
 import api.tutoringschool.model.User;
 import api.tutoringschool.services.UserService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
+@Tag(name = "Users")
 public class UserController {
     @Autowired
     private UserService userService;

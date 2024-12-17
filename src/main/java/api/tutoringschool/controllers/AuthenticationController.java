@@ -19,9 +19,11 @@ import api.tutoringschool.dtos.user.UserDTO;
 import api.tutoringschool.model.User;
 import api.tutoringschool.repositories.UserRepository;
 import api.tutoringschool.security.TokenService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("auth")
+@Tag(name = "Authentication")
 public class AuthenticationController {
     @Autowired
     private AuthenticationManager authenticationManager;

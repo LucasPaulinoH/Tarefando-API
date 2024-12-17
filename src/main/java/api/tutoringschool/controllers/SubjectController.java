@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 import api.tutoringschool.dtos.subject.SubjectDTO;
 import api.tutoringschool.model.Subject;
 import api.tutoringschool.services.SubjectService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/subjects")
+@Tag(name = "Subjects")
 public class SubjectController {
     @Autowired
     private SubjectService service;

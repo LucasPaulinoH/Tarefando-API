@@ -20,6 +20,13 @@ public class SecurityConfigurations {
     @Autowired
     SecurityFilter securityFilter;
 
+    private static final String[] WHITELIST = {
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
@@ -42,6 +49,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/announcements").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.PUT, "/announcements").hasRole("TUTOR")
                         .requestMatchers(HttpMethod.DELETE, "/announcements").hasRole("TUTOR")
+                        .requestMatchers(WHITELIST).permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

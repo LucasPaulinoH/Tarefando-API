@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import api.tutoringschool.dtos.student.StudentDTO;
 import api.tutoringschool.model.Student;
 import api.tutoringschool.services.StudentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/students")
+@Tag(name = "Students")
 public class StudentController {
     @Autowired
     private StudentService service;

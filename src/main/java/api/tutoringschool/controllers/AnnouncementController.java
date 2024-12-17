@@ -22,10 +22,12 @@ import api.tutoringschool.dtos.announcement.AnnouncementDTO;
 import api.tutoringschool.dtos.common.MultipleImagesUpdateDTO;
 import api.tutoringschool.model.Announcement;
 import api.tutoringschool.services.AnnouncementService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/announcements")
+@Tag(name = "Announcements")
 public class AnnouncementController {
     @Autowired
     AnnouncementService service;

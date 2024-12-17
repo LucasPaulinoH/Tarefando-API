@@ -21,10 +21,12 @@ import api.tutoringschool.dtos.common.MultipleImagesUpdateDTO;
 import api.tutoringschool.dtos.task.TaskDTO;
 import api.tutoringschool.model.Task;
 import api.tutoringschool.services.TaskService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/tasks")
+@Tag(name = "Tasks")
 public class TaskController {
     @Autowired
     private TaskService service;

@@ -22,10 +22,12 @@ import api.tutoringschool.dtos.school.SchoolDTO;
 import api.tutoringschool.dtos.user.ProfileImageUpdateDTO;
 import api.tutoringschool.model.School;
 import api.tutoringschool.services.SchoolService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/schools")
+@Tag(name = "Schools")
 public class SchoolController {
     @Autowired
     private SchoolService service;
